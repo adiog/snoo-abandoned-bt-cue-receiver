@@ -1,15 +1,31 @@
 #include <Arduino.h>
 
-#define LED_PROMICRO 17
+#define BTSerial Serial1
 
-void setup() {
-  pinMode(LED_PROMICRO, OUTPUT);
+void setup()
+{
+    Serial.begin(9600);
+    while (!Serial)
+    {
+    }
+
+    BTSerial.begin(38400);
+    while (!BTSerial)
+    {
+    }
+
 }
 
-void loop() {
-  digitalWrite(LED_PROMICRO, HIGH);
-  delay(100);
-  digitalWrite(LED_PROMICRO, LOW);
-  delay(100);
+void loop()
+{
+    if (BTSerial.available())
+    {
+        Serial.write(BTSerial.read());
+    }
+
+    if (Serial.available())
+    {
+        BTSerial.write(Serial.read());
+    }
 }
 
